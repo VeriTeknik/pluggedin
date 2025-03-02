@@ -1,14 +1,22 @@
 {
   "name": "@pluggedin/query",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "query is a free API-to-AI service that empowers you to select your preferred model, provide custom instructions, leverage Retrieval Augmented Generation (RAG), and configure both input and output encodings—among many other features. With its clean, intuitive interface for making authenticated requests to api.plugged.in, robust TypeScript support, and comprehensive error handling, query enables developers to seamlessly integrate advanced AI capabilities into their applications, opening up a wide array of innovative possibilities in today's rapidly evolving tech landscape.",
   "main": "jest.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "PluggedIn",
   "license": "ISC",
+  "homepage": "https://github.com/VeriTeknik/pluggedin#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VeriTeknik/pluggedin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/VeriTeknik/pluggedin/issues"
+  },
   "dependencies": {
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.8",

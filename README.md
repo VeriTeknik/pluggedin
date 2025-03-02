@@ -3,8 +3,8 @@
 query is a free API-to-AI service that empowers you to select your preferred model, provide custom instructions, leverage Retrieval Augmented Generation (RAG), and configure both input and output encodings—among many other features. With its clean, intuitive interface for making authenticated requests to api.plugged.in, robust TypeScript support, and comprehensive error handling, query enables developers to seamlessly integrate advanced AI capabilities into their applications, opening up a wide array of innovative possibilities in today's rapidly evolving tech landscape.
 
 [![npm version](https://img.shields.io/npm/v/query.svg)](https://www.npmjs.com/package/query)
-[![Test Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/yourusername/query)
-[![License](https://img.shields.io/npm/l/query.svg)](https://github.com/yourusername/query/blob/main/LICENSE)
+[![Test Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/VeriTeknik/pluggedin)
+[![License](https://img.shields.io/npm/l/query.svg)](https://github.com/VeriTeknik/pluggedin/blob/main/LICENSE)
 
 ## Table of Contents
 
@@ -272,8 +272,8 @@ const client = new PluggedInClient({
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/query.git
-cd query
+git clone https://github.com/VeriTeknik/pluggedin.git
+cd pluggedin
 
 # Install dependencies
 npm install
@@ -322,4 +322,4 @@ Please ensure your code maintains the high test coverage standards of the projec
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the ISC License - see the [LICENSE](https://github.com/VeriTeknik/pluggedin/blob/main/LICENSE) file for details.
