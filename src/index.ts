@@ -4,6 +4,10 @@
  */
 
 import { PluggedInClient } from './client';
+import * as TypesModule from './types';
+import * as ErrorsModule from './errors';
+
+// Re-export individual types for convenience
 import { 
   PluggedInOptions,
   RequestConfig,
@@ -14,6 +18,7 @@ import {
   ErrorResponseData
 } from './types';
 
+// Re-export individual errors for convenience
 import {
   ApiError,
   AuthenticationError,
@@ -26,7 +31,10 @@ import {
 // Export the client
 export { PluggedInClient };
 
-// Export types
+// Export Types namespace for backward compatibility
+export const Types = TypesModule;
+
+// Export individual types
 export {
   PluggedInOptions,
   RequestConfig,
