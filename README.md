@@ -2,9 +2,9 @@
 
 query is a free API-to-AI service that empowers you to select your preferred model, provide custom instructions, leverage Retrieval Augmented Generation (RAG), and configure both input and output encodings—among many other features. With its clean, intuitive interface for making authenticated requests to api.plugged.in, robust TypeScript support, and comprehensive error handling, query enables developers to seamlessly integrate advanced AI capabilities into their applications, opening up a wide array of innovative possibilities in today's rapidly evolving tech landscape.
 
-[![npm version](https://img.shields.io/npm/v/query.svg)](https://www.npmjs.com/package/query)
+[![npm version](https://img.shields.io/npm/v/@pluggedin/query.svg)](https://www.npmjs.com/package/@pluggedin/query)
 [![Test Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/VeriTeknik/pluggedin)
-[![License](https://img.shields.io/npm/l/query.svg)](https://github.com/VeriTeknik/pluggedin/blob/main/LICENSE)
+[![License](https://img.shields.io/npm/l/@pluggedin/query.svg)](https://github.com/VeriTeknik/pluggedin/blob/main/LICENSE)
 
 ## Table of Contents
 
@@ -32,19 +32,19 @@ query is a free API-to-AI service that empowers you to select your preferred mod
 ## Installation
 
 ```bash
-npm install query
+npm install @pluggedin/query
 ```
 
 For Yarn users:
 
 ```bash
-yarn add query
+yarn add @pluggedin/query
 ```
 
 ## Basic Usage
 
 ```typescript
-import { PluggedInClient } from 'query';
+import { PluggedInClient } from '@pluggedin/query';
 
 // Initialize client
 const client = new PluggedInClient({
@@ -182,7 +182,7 @@ import {
   NetworkError,          // Network connectivity issues
   RateLimitError,        // 429 errors
   ServerError            // 500, 503, etc. errors
-} from 'query';
+} from '@pluggedin/query';
 
 try {
   const response = await client.request({ endpoint: '/data' });
@@ -217,7 +217,7 @@ import {
   ResponseData,       // Response structure
   PluggridConfig,     // Pluggrid configuration
   RequestParams       // Request parameters
-} from 'query';
+} from '@pluggedin/query';
 
 // Use with generic type parameters for type-safe responses
 interface User {
