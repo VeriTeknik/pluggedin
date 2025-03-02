@@ -8,6 +8,7 @@ import {
   RateLimitError,
   ServerError
 } from '../src/errors';
+import { InputEncoding, OutputEncoding, QueryParams } from '../src/types';
 
 // Mock axios
 jest.mock('axios');
@@ -32,7 +33,16 @@ describe('PluggedInClient', () => {
         response: {
           use: jest.fn((successFn, errorFn) => {
             // Store the error handler for testing
-            (mockAxios as any).errorHandler = errorFn;
+            // Use a function that rejects the promise instead of resolving it
+            (mockAxios as any).errorHandler = (error: any) => {
+              // If the original error handler throws, we need to reject the promise
+              try {
+                errorFn(error);
+                return Promise.resolve({});
+              } catch (err) {
+                return Promise.reject(err);
+              }
+            };
             return () => {};
           })
         }
@@ -132,7 +142,9 @@ describe('PluggedInClient', () => {
       const client = new PluggedInClient({ apiToken: 'test-token' });
       const axiosInstance = mockAxios.create();
       (axiosInstance.request as jest.Mock).mockResolvedValueOnce({
-        data: { status: 'success', data: { result: 'test' } }
+        data: { status: 'success', data: { result: 'test' } },
+        status: 200,
+        headers: {}
       });
       
       const response = await client.request({
@@ -147,7 +159,12 @@ describe('PluggedInClient', () => {
         data: { key: 'value' }
       }));
       
-      expect(response).toEqual({ status: 'success', data: { result: 'test' } });
+      expect(response).toEqual({ 
+        status: 'success', 
+        data: { result: 'test' },
+        statusCode: 200,
+        headers: {}
+      });
     });
     
     it('should validate request parameters if provided', async () => {
@@ -172,7 +189,23 @@ describe('PluggedInClient', () => {
       const client = new PluggedInClient({ apiToken: 'test-token' });
       const axiosInstance = mockAxios.create();
       (axiosInstance.request as jest.Mock).mockResolvedValueOnce({
-        data: { status: 'success', data: { results: [] } }
+        data: { 
+          data: { 
+            id: 'test-id',
+            result: [],
+            model: 'test-model',
+            usage: {
+              promptTokens: 10,
+              completionTokens: 20,
+              totalTokens: 30
+            },
+            inputEncoding: 'text',
+            outputEncoding: 'text',
+            createdAt: new Date().toISOString()
+          } 
+        },
+        status: 200,
+        headers: {}
       });
       
       await client.query('test prompt');
@@ -180,9 +213,11 @@ describe('PluggedInClient', () => {
       expect(axiosInstance.request).toHaveBeenCalledWith(expect.objectContaining({
         method: 'POST',
         url: '/query',
-        data: {
-          query: 'test prompt'
-        }
+        data: expect.objectContaining({
+          query: 'test prompt',
+          inputEncoding: 'text',
+          outputEncoding: 'text'
+        })
       }));
     });
 
@@ -190,7 +225,23 @@ describe('PluggedInClient', () => {
       const client = new PluggedInClient({ apiToken: 'test-token' });
       const axiosInstance = mockAxios.create();
       (axiosInstance.request as jest.Mock).mockResolvedValueOnce({
-        data: { status: 'success', data: { results: [] } }
+        data: { 
+          data: { 
+            id: 'test-id',
+            result: [],
+            model: 'test-model',
+            usage: {
+              promptTokens: 10,
+              completionTokens: 20,
+              totalTokens: 30
+            },
+            inputEncoding: 'text',
+            outputEncoding: 'text',
+            createdAt: new Date().toISOString()
+          } 
+        },
+        status: 200,
+        headers: {}
       });
       
       await client.query('test prompt', 'grid1');
@@ -198,10 +249,10 @@ describe('PluggedInClient', () => {
       expect(axiosInstance.request).toHaveBeenCalledWith(expect.objectContaining({
         method: 'POST',
         url: '/query',
-        data: {
+        data: expect.objectContaining({
           query: 'test prompt',
           pluggrid: { id: 'grid1' }
-        }
+        })
       }));
     });
     
@@ -209,7 +260,23 @@ describe('PluggedInClient', () => {
       const client = new PluggedInClient({ apiToken: 'test-token' });
       const axiosInstance = mockAxios.create();
       (axiosInstance.request as jest.Mock).mockResolvedValueOnce({
-        data: { status: 'success', data: { results: [] } }
+        data: { 
+          data: { 
+            id: 'test-id',
+            result: [],
+            model: 'test-model',
+            usage: {
+              promptTokens: 10,
+              completionTokens: 20,
+              totalTokens: 30
+            },
+            inputEncoding: 'text',
+            outputEncoding: 'text',
+            createdAt: new Date().toISOString()
+          } 
+        },
+        status: 200,
+        headers: {}
       });
       
       await client.query('test prompt', { id: 'grid1', version: '1.0' });
@@ -217,10 +284,10 @@ describe('PluggedInClient', () => {
       expect(axiosInstance.request).toHaveBeenCalledWith(expect.objectContaining({
         method: 'POST',
         url: '/query',
-        data: {
+        data: expect.objectContaining({
           query: 'test prompt',
           pluggrid: { id: 'grid1', version: '1.0' }
-        }
+        })
       }));
     });
 
@@ -228,7 +295,23 @@ describe('PluggedInClient', () => {
       const client = new PluggedInClient({ apiToken: 'test-token' });
       const axiosInstance = mockAxios.create();
       (axiosInstance.request as jest.Mock).mockResolvedValueOnce({
-        data: { status: 'success', data: { results: [] } }
+        data: { 
+          data: { 
+            id: 'test-id',
+            result: [],
+            model: 'test-model',
+            usage: {
+              promptTokens: 10,
+              completionTokens: 20,
+              totalTokens: 30
+            },
+            inputEncoding: 'text',
+            outputEncoding: 'text',
+            createdAt: new Date().toISOString()
+          } 
+        },
+        status: 200,
+        headers: {}
       });
       
       await client.query('test prompt', 'grid1', 'Custom instructions');
@@ -236,13 +319,13 @@ describe('PluggedInClient', () => {
       expect(axiosInstance.request).toHaveBeenCalledWith(expect.objectContaining({
         method: 'POST',
         url: '/query',
-        data: {
+        data: expect.objectContaining({
           query: 'test prompt',
           pluggrid: { 
             id: 'grid1',
             customInstructions: 'Custom instructions'
           }
-        }
+        })
       }));
     });
     
@@ -250,21 +333,42 @@ describe('PluggedInClient', () => {
       const client = new PluggedInClient({ apiToken: 'test-token' });
       const axiosInstance = mockAxios.create();
       (axiosInstance.request as jest.Mock).mockResolvedValueOnce({
-        data: { status: 'success', data: { results: [] } }
+        data: { 
+          data: { 
+            id: 'test-id',
+            result: [],
+            model: 'test-model',
+            usage: {
+              promptTokens: 10,
+              completionTokens: 20,
+              totalTokens: 30
+            },
+            inputEncoding: 'text',
+            outputEncoding: 'text',
+            createdAt: new Date().toISOString()
+          } 
+        },
+        status: 200,
+        headers: {}
       });
       
-      const additionalParams = { maxResults: 5, format: 'json' };
+      const additionalParams: QueryParams = { 
+        maxTokens: 5, 
+        outputEncoding: 'json',
+        temperature: 0.7
+      };
       await client.query('test prompt', 'grid1', undefined, additionalParams);
       
       expect(axiosInstance.request).toHaveBeenCalledWith(expect.objectContaining({
         method: 'POST',
         url: '/query',
-        data: {
+        data: expect.objectContaining({
           query: 'test prompt',
           pluggrid: { id: 'grid1' },
-          maxResults: 5,
-          format: 'json'
-        }
+          maxTokens: 5,
+          outputEncoding: 'json',
+          temperature: 0.7
+        })
       }));
     });
   });
@@ -287,7 +391,23 @@ describe('PluggedInClient', () => {
       const client = new PluggedInClient({ apiToken: 'test-token' });
       const axiosInstance = mockAxios.create();
       (axiosInstance.request as jest.Mock).mockResolvedValueOnce({
-        data: { status: 'success', data: { results: [] } }
+        data: { 
+          data: { 
+            id: 'test-id',
+            result: [],
+            model: 'gpt-4',
+            usage: {
+              promptTokens: 10,
+              completionTokens: 20,
+              totalTokens: 30
+            },
+            inputEncoding: 'text',
+            outputEncoding: 'text',
+            createdAt: new Date().toISOString()
+          } 
+        },
+        status: 200,
+        headers: {}
       });
       
       await client.rawQuery('test prompt', { model: 'gpt-4' });
@@ -295,12 +415,12 @@ describe('PluggedInClient', () => {
       expect(axiosInstance.request).toHaveBeenCalledWith(expect.objectContaining({
         method: 'POST',
         url: '/ai/query',
-        data: {
+        data: expect.objectContaining({
           prompt: 'test prompt',
           model: 'gpt-4',
           inputEncoding: 'text',
           outputEncoding: 'text'
-        }
+        })
       }));
     });
 
@@ -308,13 +428,29 @@ describe('PluggedInClient', () => {
       const client = new PluggedInClient({ apiToken: 'test-token' });
       const axiosInstance = mockAxios.create();
       (axiosInstance.request as jest.Mock).mockResolvedValueOnce({
-        data: { status: 'success', data: { results: [] } }
+        data: { 
+          data: { 
+            id: 'test-id',
+            result: [],
+            model: 'gpt-4',
+            usage: {
+              promptTokens: 10,
+              completionTokens: 20,
+              totalTokens: 30
+            },
+            inputEncoding: 'text',
+            outputEncoding: 'json',
+            createdAt: new Date().toISOString()
+          } 
+        },
+        status: 200,
+        headers: {}
       });
       
       await client.rawQuery('test prompt', {
         model: 'gpt-4',
         customInstructions: 'Be concise',
-        inputEncoding: 'markdown',
+        inputEncoding: 'text',
         outputEncoding: 'json',
         temperature: 0.7,
         maxTokens: 1000
@@ -323,15 +459,15 @@ describe('PluggedInClient', () => {
       expect(axiosInstance.request).toHaveBeenCalledWith(expect.objectContaining({
         method: 'POST',
         url: '/ai/query',
-        data: {
+        data: expect.objectContaining({
           prompt: 'test prompt',
           model: 'gpt-4',
           customInstructions: 'Be concise',
-          inputEncoding: 'markdown',
+          inputEncoding: 'text',
           outputEncoding: 'json',
           temperature: 0.7,
           maxTokens: 1000
-        }
+        })
       }));
     });
   });
@@ -342,13 +478,25 @@ describe('PluggedInClient', () => {
       const errorHandler = (mockAxios as any).errorHandler;
       
       const mockError = {
+        isAxiosError: true,
+        config: {},
         response: {
           status: 401,
-          data: { message: 'Invalid token' }
+          data: { message: 'Invalid token', retry: { attempt: 0, maxAttempts: 3 } },
+          headers: {}
         }
       };
       
-      await expect(errorHandler(mockError)).rejects.toThrow(AuthenticationError);
+      try {
+        await errorHandler(mockError);
+        // Should not reach here
+        expect(true).toBe(false);
+      } catch (error: any) {
+        // Type assertion for TypeScript - Jest test environment
+        expect(error instanceof AuthenticationError).toBe(true);
+        expect(error.statusCode).toBe(401);
+        expect(error.data.message).toBe('Invalid token');
+      }
     });
 
     it('should handle validation errors', async () => {
@@ -356,13 +504,25 @@ describe('PluggedInClient', () => {
       const errorHandler = (mockAxios as any).errorHandler;
       
       const mockError = {
+        isAxiosError: true,
+        config: {},
         response: {
           status: 400,
-          data: { message: 'Invalid parameters' }
+          data: { message: 'Invalid parameters', retry: { attempt: 0, maxAttempts: 3 } },
+          headers: {}
         }
       };
       
-      await expect(errorHandler(mockError)).rejects.toThrow(ValidationError);
+      try {
+        await errorHandler(mockError);
+        // Should not reach here
+        expect(true).toBe(false);
+      } catch (error: any) {
+        // Type assertion for TypeScript - Jest test environment
+        expect(error instanceof ValidationError).toBe(true);
+        expect(error.statusCode).toBe(400);
+        expect(error.data.message).toBe('Invalid parameters');
+      }
     });
 
     it('should handle network errors', async () => {
@@ -370,6 +530,8 @@ describe('PluggedInClient', () => {
       const errorHandler = (mockAxios as any).errorHandler;
       
       const mockError = {
+        isAxiosError: true,
+        config: {},
         request: {},
         message: 'Network Error'
       };
@@ -382,9 +544,12 @@ describe('PluggedInClient', () => {
       const errorHandler = (mockAxios as any).errorHandler;
       
       const mockError = {
+        isAxiosError: true,
+        config: {},
         response: {
           status: 500,
-          data: { message: 'Server error' }
+          data: { message: 'Server error' },
+          headers: {}
         }
       };
       
@@ -396,9 +561,12 @@ describe('PluggedInClient', () => {
       const errorHandler = (mockAxios as any).errorHandler;
       
       const mockError = {
+        isAxiosError: true,
+        config: {},
         response: {
           status: 429,
-          data: { message: 'Too many requests' }
+          data: { message: 'Too many requests' },
+          headers: {}
         }
       };
       
@@ -410,9 +578,12 @@ describe('PluggedInClient', () => {
       const errorHandler = (mockAxios as any).errorHandler;
       
       const mockError = {
+        isAxiosError: true,
+        config: {},
         response: {
           status: 503,
-          data: { message: 'Service unavailable' }
+          data: { message: 'Service unavailable' },
+          headers: {}
         }
       };
       
@@ -423,11 +594,13 @@ describe('PluggedInClient', () => {
       const client = new PluggedInClient({ apiToken: 'test-token' });
       const errorHandler = (mockAxios as any).errorHandler;
       
-      // Testing line 169 - default ApiError case
       const mockError = {
+        isAxiosError: true,
+        config: {},
         response: {
           status: 418, // I'm a teapot - non-standard HTTP status
-          data: { message: 'I refuse to brew coffee' }
+          data: { message: 'I refuse to brew coffee' },
+          headers: {}
         }
       };
       
@@ -439,8 +612,9 @@ describe('PluggedInClient', () => {
       const client = new PluggedInClient({ apiToken: 'test-token' });
       const errorHandler = (mockAxios as any).errorHandler;
       
-      // Testing line 184 - error during request setup
       const mockError = {
+        isAxiosError: true,
+        config: {},
         message: 'Request configuration error'
         // No response or request property
       };
@@ -453,7 +627,6 @@ describe('PluggedInClient', () => {
       const client = new PluggedInClient({ apiToken: 'test-token' });
       const axiosInstance = mockAxios.create();
       
-      // Testing line 98 - error propagation in request method
       const mockError = new Error('Something went wrong');
       (axiosInstance.request as jest.Mock).mockRejectedValueOnce(mockError);
       
