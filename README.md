@@ -1,6 +1,6 @@
 # plugged-in-api
 
-A clean interface for making authenticated requests to api.plugged.in, with TypeScript support and comprehensive error handling.
+plugged-in-api is a free API-to-AI service that empowers you to select your preferred model, provide custom instructions, leverage Retrieval Augmented Generation (RAG), and configure both input and output encodings—among many other features. With its clean, intuitive interface for making authenticated requests to api.plugged.in, robust TypeScript support, and comprehensive error handling, plugged-in-api enables developers to seamlessly integrate advanced AI capabilities into their applications, opening up a wide array of innovative possibilities in today's rapidly evolving tech landscape.
 
 [![npm version](https://img.shields.io/npm/v/plugged-in-api.svg)](https://www.npmjs.com/package/plugged-in-api)
 [![Test Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/yourusername/plugged-in-api)

@@ -1,5 +1,5 @@
 {
-  "name": "workspace",
+  "name": "@pluggedin/query",
   "version": "1.0.0",
   "description": "A clean interface for making authenticated requests to api.plugged.in, with TypeScript support and comprehensive error handling.",
   "main": "jest.config.js",
