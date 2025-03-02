@@ -1,5 +1,5 @@
 /**
- * Type definitions for the plugged-in-api client
+ * Type definitions for the query client
  */
 
 export interface PluggedInOptions {

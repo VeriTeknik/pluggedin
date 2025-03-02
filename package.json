@@ -1,7 +1,7 @@
 {
   "name": "@pluggedin/query",
-  "version": "1.0.0",
-  "description": "A clean interface for making authenticated requests to api.plugged.in, with TypeScript support and comprehensive error handling.",
+  "version": "1.0.2",
+  "description": "query is a free API-to-AI service that empowers you to select your preferred model, provide custom instructions, leverage Retrieval Augmented Generation (RAG), and configure both input and output encodings—among many other features. With its clean, intuitive interface for making authenticated requests to api.plugged.in, robust TypeScript support, and comprehensive error handling, query enables developers to seamlessly integrate advanced AI capabilities into their applications, opening up a wide array of innovative possibilities in today's rapidly evolving tech landscape.",
   "main": "jest.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

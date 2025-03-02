@@ -1,8 +1,15 @@
 /**
- * Custom error classes for the plugged-in-api client
+ * Custom error classes for the query client
  */
 
 import { ErrorResponseData } from './types';
+
+// Add type declaration for Error.captureStackTrace
+declare global {
+  interface ErrorConstructor {
+    captureStackTrace(targetObject: object, constructorOpt?: Function): void;
+  }
+}
 
 /**
  * Base API error class

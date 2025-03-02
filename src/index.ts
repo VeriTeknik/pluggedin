@@ -1,6 +1,6 @@
 /**
- * Main entry point for the plugged-in-api client
- * @module plugged-in-api
+ * Main entry point for the query client
+ * @module query
  */
 
 import { PluggedInClient } from './client';

@@ -1,5 +1,5 @@
 /**
- * Utility functions for the plugged-in-api client
+ * Utility functions for the query client
  */
 
 import { RequestParams } from './types';
